@@ -1,0 +1,39 @@
+body {
+    background: #191970;
+  }
+  
+  #root {
+    width: 755px;
+    height: 480px;
+    margin: 120px auto;
+    position: relative;
+  }
+  
+  .circle {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+  
+  button {
+    display: block;
+    margin: 0 auto;
+    padding: 10px 20px;
+    font-size: 20px;
+    border-radius: 10px;
+    font-family: "Pacifico", cursive;
+    background-color: orange;
+    border-bottom: 5px solid #ff8c00;
+    text-shadow: 0px -2px #d1b358;
+    color: #191970;
+    font-weight: bold;
+  }
+  
+  button:active {
+    transform: translate(0px, 5px);
+    -webkit-transform: translate(0px, 5px);
+    border-bottom: 1px solid #ff8c00;
+  }
+  
+  

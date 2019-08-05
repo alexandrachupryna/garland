@@ -1,6 +1,10 @@
 const root = document.querySelector("div#root");
 
 const colors = ["red", "orange", "yellow"];
+let leftRectangle = [];
+let topRectangle = [];
+let leftCirlce = [];
+let topCircle = [];
 
 let leftPosition = 715;
 let topPosition = 220;
@@ -11,6 +15,8 @@ for (let i = 0; i < 42; i++) {
   circle.style.cssText =
     "left: " + leftPosition + "px; top: " + topPosition + "px;  background:" + colors[i % 3];
   root.appendChild(circle);
+  leftRectangle[i] = leftPosition;
+  topRectangle[i] = topPosition;
   circle.value = i % 3;
   if (i < 4 || i >= 38) {
     topPosition += 55;
@@ -36,33 +42,49 @@ setInterval(function() {
 const delta = Math.PI * 2 / circleList.length;
 let angle = 0;
 
-const button = document.querySelector("button");
+for(let i = 0; i < circleList.length; i++) {
+  leftCirlce[i] = 290 * Math.cos(angle) + 350;
+  topCircle[i] = 290 * Math.sin(angle) + 225;
+  angle += delta;
+}
 
-function makeCircle() {
+const button = document.querySelector("button");
+let rectangle = true;
+
+function transform() {
   let start = Date.now();
   let timer = setInterval(function() {
     let timePassed = Date.now() - start;
-    if (timePassed >= 2000) {
+    if (timePassed >= 1000) {
       clearInterval(timer);
       return;
     }
-    draw(timePassed);
+    if(rectangle) {
+      draw(timePassed, leftCirlce, topCircle, leftRectangle, topRectangle);  
+    } else {
+      draw(timePassed, leftRectangle, topRectangle, leftCirlce, topCircle);
+    }
   }, 20);
-}
-
-function draw(timePassed) {
-  for (let i = 0; i < circleList.length; i++) {
-    const initialLeft = parseInt(circleList[i].style.left);
-    const initialTop = parseInt(circleList[i].style.top);
-    const finalLeft = 290 * Math.cos(angle) + 350;
-    const finalTop = 290 * Math.sin(angle) + 225;
-    circleList[i].style.left =
-      initialLeft + (finalLeft - initialLeft) * timePassed / 2000 + "px";
-    circleList[i].style.top =
-      initialTop + (finalTop - initialTop) * timePassed / 2000 + "px";
-    angle += delta;
+  if (rectangle) {
+    rectangle = false;
+  } else {
+    rectangle = true;
   }
 }
 
-button.addEventListener("click", makeCircle);
+function draw(timePassed, initialX, initialY, finalX, finalY) {
+  for (let i = 0; i < circleList.length; i++) {
+    const initialLeft = initialX[i];
+    const initialTop = initialY[i];
+    const finalLeft = finalX[i];
+    const finalTop = finalY[i];
+    circleList[i].style.left =
+      initialLeft + (finalLeft - initialLeft) * timePassed / 1000 + "px";
+    circleList[i].style.top =
+      initialTop + (finalTop - initialTop) * timePassed / 1000 + "px";
+  }
+}
+
+button.addEventListener("click", transform);
+
 
